@@ -1,0 +1,155 @@
+function myFunction() {
+    function addTimeToDate(inputDate, amount, unit) {
+  const dateObject = new Date(inputDate);
+
+  // Check if the parsing was successful and the input date is valid
+  if (isNaN(dateObject.getTime())) {
+    return "Invalid date format. Please enter a valid date string.";
+  }
+
+  switch (unit) {
+    case "days":
+      dateObject.setDate(dateObject.getDate() + amount);
+      break;
+    case "weeks":
+      dateObject.setDate(dateObject.getDate() + 7 * amount);
+      break;
+    case "months":
+      dateObject.setMonth(dateObject.getMonth() + amount);
+      break;
+    case "years":
+      dateObject.setFullYear(dateObject.getFullYear() + amount);
+      break;
+    default:
+      return "Invalid time unit. Please use 'days', 'weeks', 'months', or 'years'.";
+  }
+
+  // Format the new date as a string (e.g., "YYYY-MM-DD")
+  const year = dateObject.getFullYear();
+  const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+  const day = String(dateObject.getDate()).padStart(2, "0");
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate;
+}
+
+  
+
+
+    
+  
+
+  var wrkBk = SpreadsheetApp.getActiveSpreadsheet();
+  var wrkShtEmailID = wrkBk.getSheetByName('Form Responses 1');
+  var wrkShtMessage = wrkBk.getSheetByName('Sheet1');
+  var mailsubject = 'Vaccination Reminder';
+  var reqlength = wrkShtEmailID.getLastRow();
+
+  const today = new Date();
+  const date = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  var today_date = `${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
+
+  /*var finalmsg = "Dear [Recipient] \n" +
+    "I hope this email finds you well. We are writing to you as a gentle reminder for your ward's upcoming vaccination appointment.\n" +
+    "You can read about the information about the vaccine(s) your ward is about to receive. \n" +
+    "[Explanation]\n" +
+    "Thank you for your continued support and please let us know if you have any questions or concerns. \n" +
+    "Best regards,\n" +
+    "   LeNest";*/
+
+  function sendEmailWithReminder(email, name, explanation) {
+    finalmsg = finalmsg.replace("[Recipient]", name);
+    finalmsg = finalmsg.replace("[Explanation]", explanation + "\n");
+    MailApp.sendEmail({ to: email, subject: mailsubject, body: finalmsg });
+  }
+
+  for (var patient = 2; patient <= reqlength; patient++) {
+    var name = wrkShtEmailID.getRange('B' + patient).getValue();
+    var email = wrkShtEmailID.getRange('C' + patient).getValue();
+    var dob = wrkShtEmailID.getRange('H' + patient).getValue();
+
+    var finalmsg = "Dear [Recipient] \n" +
+    "I hope this email finds you well. We are writing to you as a gentle reminder for your ward's upcoming vaccination appointment.\n" +
+    "You can read about the information about the vaccine(s) your ward is about to receive. \n" +
+    "[Explanation]\n" +
+    "Thank you for your continued support and please let us know if you have any questions or concerns. \n" +
+    "Best regards,\n" +
+    "   LeNest";
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 6, 'weeks'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B3').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 10, 'weeks'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B4').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 14, 'weeks'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B5').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 6, 'months'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B6').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 7, 'months'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B7').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 9, 'months'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B8').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 12, 'months'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B9').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 13, 'months'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B10').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 15, 'months'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B11').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 17, 'months'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B12').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob,18, 'months'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B13').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 4, 'years'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B14').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 9, 'years'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B15').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 10, 'years'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B16').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 2, 'years'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B18').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 3, 'years'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B18').getValue());
+    }
+
+    if (today_date == addTimeToDate(addTimeToDate(dob, 4, 'years'), -2, 'days')) {
+      sendEmailWithReminder(email, name, wrkShtMessage.getRange('B18').getValue());
+    }
+
+    // ... (rest of the if statements)
+
+  }
+  //console.log(today_date)
+  //console.log(addTimeToDate('2023-06-14',6,'weeks'))
+
+  }
